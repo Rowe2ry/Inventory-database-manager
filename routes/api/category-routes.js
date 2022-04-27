@@ -8,10 +8,10 @@ router.get('/', async (req, res) => {
   // find all categories
   // be sure to include its associated Products
   try {
-    const categoryInfo = await Category.findAll({
+    const categoryList = await Category.findAll({
       include: [{ model: Product }]
     });
-    res.status(200).json(categoryInfo);
+    res.status(200).json(categoryList);
   } catch (err) {
     res.status(400).json(err);
   };
@@ -21,10 +21,10 @@ router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
   try {
-    const singleCatInfo = await Category.findByPk(req.params.id, {
+    const oneCategory = await Category.findByPk(req.params.id, {
       include: [{ model: Product }]
     });
-    res.status(200).json(singleCatInfo);
+    res.status(200).json(oneCategory);
   } catch (err) {
     res.status(400).json(err);
   };
@@ -32,6 +32,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   // create a new category
+  
+
   try {
     const newCategory = await Category.create(req.body);
     res.status(200).json(newCategory)
@@ -43,6 +45,13 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {
+    const { category_name } = req.body;
+
+    if (!category_name) {
+      res.status(400).json('That body format was not recognized.');
+      return;
+    };
+
     const changeCategory = await Category.update(
       {
         category_name: req.body.category_name
