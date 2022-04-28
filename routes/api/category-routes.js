@@ -57,7 +57,7 @@ router.put('/:id', async (req, res) => {
       },
       {
         where: {
-          id: regexp.params.id
+          id: req.params.id
         },
       },
     );
@@ -75,7 +75,7 @@ router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
 try {
     const byeByeCat = await Category.destroy({
-      wjere: { id: req.params.id }
+      where: { id: req.params.id }
     });
     res.status(200).json(byeByeCat);
   } catch (err) {
